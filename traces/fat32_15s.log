@@ -1,0 +1,162 @@
+[2J[01;01H[=3h[2J[01;01H[2J[01;01H[=3h[2J[01;01H[2J[01;01H[=3h[2J[01;01HBdsDxe: loading Boot0001 "UEFI QEMU HARDDISK QM00001 " from PciRoot(0x0)/Pci(0x1,0x1)/Ata(Primary,Master,0x0)
+BdsDxe: starting Boot0001 "UEFI QEMU HARDDISK QM00001 " from PciRoot(0x0)/Pci(0x1,0x1)/Ata(Primary,Master,0x0)
+[35m=====================================================[0m
+[1;36m  RUSTNOVA MICRO-OS - UEFI KERNEL BOOTSTRAP [0m
+[35m=====================================================[0m
+[BOOT] Firmware vendor: UEFI 2.x standard compliance
+[BOOT] System Table pointer: 0xf5ec018
+[BOOT] Watchdog timer disabled successfully
+[BOOT] GOP Protocol not found via firmware; fallback to direct virtual buffer
+[BOOT] Transferring control to Kernel Main Entry...
+
+[36m
+  ____            _   _   _                 ____   _____ 
+ |  _ \ _   _ ___| |_| \ | | _____   ____ _/ ___| |_   _|
+ | |_) | | | / __| __|  \| |/ _ \ \ / / _` \___ \   | |  
+ |  _ <| |_| \__ \ |_| |\  | (_) \ V / (_| |___) |  | |  
+ |_| \_\\__,_|___/\__|_| \_|\___/ \_/ \__,_|____/   |_|  
+   Educational Micro-Operating System Architecture (Rust 2021)   
+[0m
+[PHASE 1] Initializing Core Kernel Subsystems...
+[KERNEL] CPU Target: x86_64 Bare-Metal (UEFI Mode)
+[KERNEL] Total Physical RAM Detected: 128 MB
+[KERNEL] Framebuffer Address: 0xDB37050 (1024x768, stride: 1024)
+[32m[INFO ][0m [TIMER] PIT 8254 initialized at 100 Hz (divisor: 11931)
+
+[33m--- PHASE 6: MEMORY MANAGEMENT DEMONSTRATION ---[0m
+[MEM] Initial Heap: Total=262144 bytes (256 KB), Free=262112 bytes, Active=0 bytes
+[MEM] Allocating Block-A (128 bytes)...
+[MEM] Block-A allocated successfully at 0xdaf7010
+[MEM] Allocating Block-B (512 bytes)...
+[MEM] Block-B allocated successfully at 0xdaf70b0
+[MEM] Data write/read verification passed on Block-A and Block-B
+[MEM] Stats After Alloc: ActiveAllocations=2, AllocatedBytes=640, FreeBytes=261472, PeakBytes=640
+[MEM] Deallocating Block-A (0xdaf7010)...
+[MEM] Stats After Dealloc: AllocatedBytes=512, FreeBytes=261600, DeallocCount=1
+[MEM] Testing Allocation Failure Handling (requesting 1,048,576 bytes on 256 KB heap)...
+[32m[MEM-SUCCESS] Allocation failure properly caught and handled: Err(OutOfMemory) returned safely without crash![0m
+[MEM] Final Heap Summary: TotalBytes=262144, AllocatedBytes=0, FreeBytes=262112, FailuresRecorded=1
+[32m[MEM-PASSED] Memory Manager Phase 6 verification complete.[0m
+
+
+[33m--- PHASE 5: SYNCHRONIZATION DEMONSTRATION ---[0m
+[SYNC] Initial state: Lock is free, balance = $1000
+[SYNC] Worker-1 attempting lock acquisition...
+[SYNC] Worker-1 ACQUIRED lock successfully!
+   [SYNC-LEDGER] Worker-1 performed deposit +$250: balance $1000 -> $1250 (tx #1)
+[SYNC] Worker-2 attempting try_lock while Worker-1 holds lock...
+[SYNC-SUCCESS] Mutual exclusion verified: Worker-2 correctly denied concurrent access!
+[SYNC] Worker-1 completing critical section and releasing lock...
+[SYNC] Worker-2 attempting lock acquisition after release...
+[SYNC] Worker-2 ACQUIRED lock successfully!
+   [SYNC-LEDGER] Worker-2 performed deposit +$500: balance $1250 -> $1750 (tx #2)
+[SYNC] Worker-2 releasing lock...
+[SYNC] Invariant Verification: Expected=$1750, Actual=$1750, TxCount=2
+[32m[SYNC-PASSED] Synchronization test PASSED with 100% integrity.[0m
+
+
+[33m--- PHASE 3 & PHASE 7: SCHEDULER ENGINEERING COMPARISON ---[0m
+[BENCHMARK] Workload: 4 Independent Demonstration Tasks
+   Task 1: Telemetry & Sensor Monitor (Priority: NORMAL, Burst: 6 ticks)
+   Task 2: Memory Compaction & GC    (Priority: LOW,    Burst: 8 ticks)
+   Task 3: Network Packet Processor  (Priority: HIGH,   Burst: 5 ticks)
+   Task 4: Cryptographic Auditor     (Priority: CRIT,   Burst: 4 ticks)
+
+[36m>>> RUN 1: STANDARD ROUND ROBIN SCHEDULER (Time Quantum = 2 ticks) <<<[0m
+Task 1 → Running
+   [TASK-1: Telemetry] Sample cycle #1: reading sensors, CPU load nominal
+   [TASK-1: Telemetry] Sample cycle #2: reading sensors, CPU load nominal
+Task 2 → Running
+   [TASK-2: Memory GC] Compact block pass #1: scrubbing slab fragmentation
+   [TASK-2: Memory GC] Compact block pass #2: scrubbing slab fragmentation
+Task 3 → Running
+   [TASK-3: NetRouter] Processing ingress packet buffer #1: CRC32 valid
+   [TASK-3: NetRouter] Processing ingress packet buffer #2: CRC32 valid
+Task 4 → Running
+   [TASK-4: Security] Kernel image integrity hash checkpoint #1: 0x9FA204B1 OK
+   [TASK-4: Security] Kernel image integrity hash checkpoint #2: 0x9FA204B1 OK
+Task 1 → Running
+   [TASK-1: Telemetry] Sample cycle #3: reading sensors, CPU load nominal
+   [TASK-1: Telemetry] Sample cycle #4: reading sensors, CPU load nominal
+Task 2 → Running
+   [TASK-2: Memory GC] Compact block pass #3: scrubbing slab fragmentation
+   [TASK-2: Memory GC] Compact block pass #4: scrubbing slab fragmentation
+Task 3 → Running
+   [TASK-3: NetRouter] Processing ingress packet buffer #3: CRC32 valid
+   [TASK-3: NetRouter] Processing ingress packet buffer #4: CRC32 valid
+Task 4 → Running
+   [TASK-4: Security] Kernel image integrity hash checkpoint #3: 0x9FA204B1 OK
+   [TASK-4: Security] Kernel image integrity hash checkpoint #4: 0x9FA204B1 OK
+   [SCHEDULER] Task 4 completed in 4 ticks (wait: 13, turnaround: 16)
+Task 1 → Running
+   [TASK-1: Telemetry] Sample cycle #5: reading sensors, CPU load nominal
+   [TASK-1: Telemetry] Sample cycle #6: reading sensors, CPU load nominal
+   [SCHEDULER] Task 1 completed in 6 ticks (wait: 13, turnaround: 18)
+Task 2 → Running
+   [TASK-2: Memory GC] Compact block pass #5: scrubbing slab fragmentation
+   [TASK-2: Memory GC] Compact block pass #6: scrubbing slab fragmentation
+Task 3 → Running
+   [TASK-3: NetRouter] Processing ingress packet buffer #5: CRC32 valid
+   [SCHEDULER] Task 3 completed in 5 ticks (wait: 17, turnaround: 21)
+Task 2 → Running
+   [TASK-2: Memory GC] Compact block pass #7: scrubbing slab fragmentation
+   [TASK-2: Memory GC] Compact block pass #8: scrubbing slab fragmentation
+   [SCHEDULER] Task 2 completed in 8 ticks (wait: 16, turnaround: 23)
+
+[36m>>> RUN 2: DYNAMIC TIME QUANTUM ROUND ROBIN (Specialization Extension) <<<[0m
+Task 1 → Running [Dynamic Quantum: 6 ticks, Priority: NORMAL]
+   [TASK-1: Telemetry] Sample cycle #1: reading sensors, CPU load nominal
+   [TASK-1: Telemetry] Sample cycle #2: reading sensors, CPU load nominal
+   [TASK-1: Telemetry] Sample cycle #3: reading sensors, CPU load nominal
+   [TASK-1: Telemetry] Sample cycle #4: reading sensors, CPU load nominal
+   [TASK-1: Telemetry] Sample cycle #5: reading sensors, CPU load nominal
+   [TASK-1: Telemetry] Sample cycle #6: reading sensors, CPU load nominal
+   [DYNAMIC SCHEDULER] Task 1 completed in 6 ticks (wait: 1, turnaround: 6)
+Task 2 → Running [Dynamic Quantum: 3 ticks, Priority: LOW]
+   [TASK-2: Memory GC] Compact block pass #1: scrubbing slab fragmentation
+   [TASK-2: Memory GC] Compact block pass #2: scrubbing slab fragmentation
+   [TASK-2: Memory GC] Compact block pass #3: scrubbing slab fragmentation
+Task 3 → Running [Dynamic Quantum: 5 ticks, Priority: HIGH]
+   [TASK-3: NetRouter] Processing ingress packet buffer #1: CRC32 valid
+   [TASK-3: NetRouter] Processing ingress packet buffer #2: CRC32 valid
+   [TASK-3: NetRouter] Processing ingress packet buffer #3: CRC32 valid
+   [TASK-3: NetRouter] Processing ingress packet buffer #4: CRC32 valid
+   [TASK-3: NetRouter] Processing ingress packet buffer #5: CRC32 valid
+   [DYNAMIC SCHEDULER] Task 3 completed in 5 ticks (wait: 10, turnaround: 14)
+Task 4 → Running [Dynamic Quantum: 4 ticks, Priority: CRITICAL]
+   [TASK-4: Security] Kernel image integrity hash checkpoint #1: 0x9FA204B1 OK
+   [TASK-4: Security] Kernel image integrity hash checkpoint #2: 0x9FA204B1 OK
+   [TASK-4: Security] Kernel image integrity hash checkpoint #3: 0x9FA204B1 OK
+   [TASK-4: Security] Kernel image integrity hash checkpoint #4: 0x9FA204B1 OK
+   [DYNAMIC SCHEDULER] Task 4 completed in 4 ticks (wait: 15, turnaround: 18)
+Task 2 → Running [Dynamic Quantum: 5 ticks, Priority: LOW]
+   [TASK-2: Memory GC] Compact block pass #4: scrubbing slab fragmentation
+   [TASK-2: Memory GC] Compact block pass #5: scrubbing slab fragmentation
+   [TASK-2: Memory GC] Compact block pass #6: scrubbing slab fragmentation
+   [TASK-2: Memory GC] Compact block pass #7: scrubbing slab fragmentation
+   [TASK-2: Memory GC] Compact block pass #8: scrubbing slab fragmentation
+   [DYNAMIC SCHEDULER] Task 2 completed in 8 ticks (wait: 16, turnaround: 23)
+
+[32m=========================================================================[0m
+[1;32m      SCHEDULER PERFORMANCE COMPARISON: STANDARD RR vs DYNAMIC RR       [0m
+[32m=========================================================================[0m
+METRIC                           STANDARD RR (Q=2)    DYNAMIC QUANTUM RR
+-------------------------------------------------------------------------
+Total Tasks Scheduled:           4                    4                   
+Total Context Switches:          12                   5                   
+Average Waiting Time (ticks):    14.75                10.50               
+Average Response Time (ticks):   3.00                 7.25                
+Average Turnaround Time (ticks): 19.50                15.25               
+Jain's Fairness Index:           0.9379               0.9379              
+-------------------------------------------------------------------------
+CONTEXT SWITCH REDUCTION:        58.3% fewer switches with Dynamic Quantum!
+=========================================================================
+
+
+[35m--- PHASES 8-11: GRAPHICAL DESKTOP & SUBSYSTEMS ---[0m
+[GUI] Initializing Graphics Output Protocol rendering engine...
+[GUI] Rendering Desktop Wallpaper, Taskbar, Start Menu, and Clock...
+[GUI] Rendering Window 1: System Monitor Dashboard (Phase 11)...
+[GUI] Rendering Window 2: Terminal Console Shell (Phase 8)...
+[GUI] Rendering Window 3: Custom Application Store (Phase 9)...
+[GUI] Rendering Window 4: Wi-Fi 802.11ax Networking Center (Phase 10)...

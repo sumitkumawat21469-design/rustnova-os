@@ -1,0 +1,17 @@
+[package]
+name = "rustnova-os"
+version = "0.1.0"
+edition = "2021"
+authors = ["RustNova OS Engineering Team"]
+description = "RustNova OS - Educational Micro-Operating System written in Rust"
+
+[dependencies]
+
+[profile.dev]
+panic = "abort"
+opt-level = 1
+
+[profile.release]
+panic = "abort"
+opt-level = 2
+lto = true

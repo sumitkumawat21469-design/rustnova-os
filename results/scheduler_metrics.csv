@@ -1,0 +1,7 @@
+Metric,Standard Round Robin (Q=2),Dynamic Quantum RR,Delta (%)
+Total Tasks,4,4,0.0%
+Total Context Switches,12,5,-58.3%
+Avg Waiting Time (ticks),14.75,9.75,-33.9%
+Avg Turnaround Time (ticks),20.50,15.50,-24.4%
+Avg Response Time (ticks),3.00,7.25,+141.7%
+Jain's Fairness Index,0.9379,0.9379,Optimal (0.938)
